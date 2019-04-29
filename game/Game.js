@@ -5,7 +5,6 @@ class Game {
     this.isOver = false;
     this.isPaused = false;
     this.score = 0;
-    this.speed = 1;
   }
 
   init() {
@@ -14,8 +13,6 @@ class Game {
   }
 
   update() {
-    this.speed = this.speedSlider.value();
-
     if(frameCount % 5 === 0) {
       this.score += 1;
     }
@@ -25,22 +22,17 @@ class Game {
     for(let i = this.obstacles.length - 1; i >= 0; i--) {
       const obstacle = this.obstacles[i];
 
-      obstacle.update();
-
       if(obstacle.hit(this.bird)) {
         this.over();
       }
+
+      obstacle.update();
+      obstacle.show();
 
       if(obstacle.x <= -obstacle.width) {
         this.obstacles.splice(i, 1)
       }
     }
-  }
-
-  addSpeedSlider() {
-    this.speedSlider = createSlider(1, 20, 1);
-    this.speedSlider.position(25, height + 25);
-    this.speedSlider.style('width', '200px')
   }
 
   stats() {
@@ -49,7 +41,6 @@ class Game {
     textSize(12);
     textAlign(LEFT);
     text(`Score: ${this.score}`, 20, 25);
-    text(`Speed: ${this.speed}`, 20, 40);
   }
 
   reset() {
@@ -64,8 +55,8 @@ class Game {
   }
 
   paused() {
-    this.textStyle();
     textSize(14);
+    this.textStyle();
     text('Paused', width / 2, height / 2);
   }
 

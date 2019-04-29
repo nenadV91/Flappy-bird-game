@@ -2,8 +2,6 @@ let canvas;
 let width;
 let height;
 let game;
-let cycles = 1;
-let slider = null;
 
 function setup() {
   width = 600;
@@ -11,7 +9,6 @@ function setup() {
   canvas = createCanvas(width, height);
   game = new Game();
   game.init();
-  game.addSpeedSlider();
 }
 
 
@@ -26,21 +23,14 @@ function draw() {
     game.over();
   }
 
-  if(frameCount % int(100 / game.speed) === 0) {
+  if(frameCount % 100 === 0) {
     game.obstacles.push(new Obstacle())
   }
 
-  for(let n = 0; n < game.speed; n++) {
-    game.stats();
-    game.update();
-    game.checkCollision();
-    game.bird.update();
-  }
-
-  for(let obstacle of game.obstacles) {
-    obstacle.show()
-  }
-
+  game.stats();
+  game.update();
+  game.checkCollision();
+  game.bird.update();
   game.bird.show();
 }
 
